@@ -8,6 +8,7 @@ import EditBookDialog from './components/EditBookDialog';
 import MyCollectionPage from './pages/MyCollectionPage';
 import HomePage from './pages/HomePage';
 import './App.css';
+import MyToolbar from './components/MyToolbar';
 
 const App: React.FC = () => {
     const [query, setQuery] = useState('');
@@ -105,10 +106,6 @@ const App: React.FC = () => {
         setPage(1);
     };
 
-    const handleMyCollectionClick = () => {
-        window.location.href = "/my-collection";
-    };
-
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         localStorage.setItem(book.google_books_id, status);
@@ -121,17 +118,7 @@ const App: React.FC = () => {
     return (
         <Router>
             <div className="App">
-                <AppBar position="fixed" className="header">
-                    <Toolbar>
-                        <Typography variant="h6" component="div">
-                            Book Collection Manager
-                        </Typography>
-                        <nav className="nav-links">
-                            <Link to="/" className="nav-link" onClick={handleHomeClick}>Home</Link>
-                            <Link to="/my-collection" onClick={handleMyCollectionClick} className="nav-link">My Collection</Link>
-                        </nav>
-                    </Toolbar>
-                </AppBar>
+                <MyToolbar />
                 <Container style={{ marginTop: '80px' }}>
                     <Routes>
                         <Route path="/" element={

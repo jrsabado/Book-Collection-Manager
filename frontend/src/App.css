@@ -71,7 +71,22 @@ body {
 
 .book-card .MuiIconButton-root {
     align-self: flex-end;
+    /* margin-top: 16px; */
+    margin-left: 5px;
+
+}
+
+.action-section {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     margin-top: 16px;
+}
+
+.delete-icon {
+    margin-left: 20px;
+    width: 32px;
+    height: 32px;
 }
 
 /* Typography styles */
@@ -118,4 +133,45 @@ body {
 
 .header .nav-link:hover {
     color: #ffeb3b;
+}
+
+/* Toolbar */
+
+.app-bar {
+    background-color: #3f51b5; /* Change the background color to your preference */
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1.5rem;
+    color: #ffffff;
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-links .MuiButton-root {
+    text-transform: none;
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+.nav-links .MuiButton-startIcon {
+    margin-right: 0.5rem;
 }

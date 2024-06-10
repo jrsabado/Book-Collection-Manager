@@ -35,25 +35,27 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                         {book.author}
                     </Typography>
                 </div>
-                <FormControl fullWidth>
-                    <InputLabel id="book-status-label">Status</InputLabel>
-                    <Select
-                        labelId="book-status-label"
-                        value={book.status || 'Add to collection'}
-                        onChange={handleStatusChange}
-                        label="Add to collection"
-                    >
-                        <MenuItem value="Add to collection" disabled>Add to collection</MenuItem>
-                        <MenuItem value="Want to Read">Want to Read</MenuItem>
-                        <MenuItem value="Reading">Reading</MenuItem>
-                        <MenuItem value="Read">Read</MenuItem>
-                    </Select>
-                </FormControl>
-                {showDeleteIcon && (
-                    <IconButton onClick={() => onDelete(book.google_books_id)}>
-                        <DeleteIcon />
-                    </IconButton>
-                )}
+                <div className="action-section">
+                    <FormControl fullWidth>
+                        <InputLabel id="book-status-label">Status</InputLabel>
+                        <Select
+                            labelId="book-status-label"
+                            value={book.status || 'Add to collection'}
+                            onChange={handleStatusChange}
+                            label="Add to collection"
+                        >
+                            <MenuItem value="Add to collection" disabled>Add to collection</MenuItem>
+                            <MenuItem value="Want to Read">Want to Read</MenuItem>
+                            <MenuItem value="Reading">Reading</MenuItem>
+                            <MenuItem value="Read">Read</MenuItem>
+                        </Select>
+                    </FormControl>
+                    {showDeleteIcon && (
+                        <IconButton onClick={() => onDelete(book.google_books_id)} className="delete-icon">
+                            <DeleteIcon />
+                        </IconButton>
+                    )}
+                </div>
             </CardContent>
         </Card>
     );
