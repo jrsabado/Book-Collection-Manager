@@ -1,5 +1,5 @@
-import React from 'react';
-import { Card, CardContent, CardMedia, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, IconButton } from '@mui/material';
+import React, { useState } from 'react';
+import { Card, CardContent, CardMedia, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, IconButton, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Button } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Book } from './Book';
 
@@ -12,9 +12,24 @@ interface BookCardProps {
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange, showDeleteIcon = true }) => {
+    const [open, setOpen] = useState(false);
+
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
         await onStatusChange(book, newStatus);
+    };
+
+    const handleClickOpen = () => {
+        setOpen(true);
+    };
+
+    const handleClose = () => {
+        setOpen(false);
+    };
+
+    const handleDelete = async () => {
+        await onDelete(book.google_books_id);
+        handleClose();
     };
 
     return (
@@ -26,7 +41,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                 image={book.cover_image}
                 title={book.title}
             />
-            <CardContent className="card-content">
+            <CardContent>
                 <div className="book-details">
                     <Typography gutterBottom component="div" className="book-title">
                         {book.title}
@@ -35,26 +50,46 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                         {book.author}
                     </Typography>
                 </div>
-                <FormControl fullWidth>
-                    <InputLabel id="book-status-label">Status</InputLabel>
-                    <Select
-                        labelId="book-status-label"
-                        value={book.status || 'Add to collection'}
-                        onChange={handleStatusChange}
-                        label="Add to collection"
-                    >
-                        <MenuItem value="Add to collection" disabled>Add to collection</MenuItem>
-                        <MenuItem value="Want to Read">Want to Read</MenuItem>
-                        <MenuItem value="Reading">Reading</MenuItem>
-                        <MenuItem value="Read">Read</MenuItem>
-                    </Select>
-                </FormControl>
-                {showDeleteIcon && (
-                    <IconButton onClick={() => onDelete(book.google_books_id)} className="delete-icon">
-                        <DeleteIcon />
-                    </IconButton>
-                )}
+                <div className="action-section">
+                    <FormControl fullWidth>
+                        <InputLabel id="book-status-label">Status</InputLabel>
+                        <Select
+                            labelId="book-status-label"
+                            value={book.status || 'Add to collection'}
+                            onChange={handleStatusChange}
+                            label="Add to collection"
+                        >
+                            <MenuItem value="Add to collection" disabled>Add to collection</MenuItem>
+                            <MenuItem value="Want to Read">Want to Read</MenuItem>
+                            <MenuItem value="Reading">Reading</MenuItem>
+                            <MenuItem value="Read">Read</MenuItem>
+                        </Select>
+                    </FormControl>
+                    {showDeleteIcon && (
+                        <IconButton className="delete-icon" onClick={handleClickOpen}>
+                            <DeleteIcon />
+                        </IconButton>
+                    )}
+                </div>
             </CardContent>
+
+            {/* Delete Confirmation Dialog */}
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>Delete Book</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete "{book.title}" from your collection?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Cancel
+                    </Button>
+                    <Button onClick={handleDelete} color="secondary">
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Card>
     );
 };

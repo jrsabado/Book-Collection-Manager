@@ -16,7 +16,7 @@ body {
     background-color: #56887d !important; /* Wintergreen Dream */
     box-shadow: none;
     border-bottom: 1px solid #ddd;
-    /* min-height: 80px !important; */
+    padding: 10px 0; /* Add padding for a taller toolbar */
 }
 
 .toolbar {
@@ -28,13 +28,13 @@ body {
 .title {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 20px !important;
+    font-size: 24px !important;
     color: #ffffff; /* White text */
 }
 
 .nav-links {
     display: flex;
-    gap: 1rem;
+    gap: 1.5rem;
 }
 
 .nav-links a {
@@ -44,7 +44,8 @@ body {
 
 .nav-links .MuiButton-root {
     font-weight: 500;
-    font-family: "Roboto", "Helvetica", "Arial", sans-serif;    text-transform: none;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    text-transform: none;
     font-size: 20px !important;
 }
 
@@ -54,15 +55,15 @@ body {
 
 /* Typography styles */
 .h2-title {
-    font-size: 2rem;
+    font-size: 2.5rem;
     font-weight: 600 !important;
     color: #222222; /* Umber */
-    margin-top: 20px !important;
+    margin-top: 30px !important;
     text-align: center;
 }
 
 .h3-title {
-    font-size: 1.5rem;
+    font-size: 1.75rem;
     font-weight: 500;
     color: #222222; /* Umber */
     margin-bottom: 12px;
@@ -143,9 +144,11 @@ body {
 }
 
 .book-card .MuiIconButton-root {
-    align-self: flex-end;
-    /* margin-top: 16px; */
+    align-self: center;
     margin-left: 5px;
+    margin-top: 15px;
+    width: 32px;
+    height: 32px;
 }
 
 .action-section {
