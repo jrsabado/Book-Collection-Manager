@@ -14,6 +14,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
         await onStatusChange(book, newStatus);
+        localStorage.setItem(book.google_books_id, newStatus);
     };
 
     return (

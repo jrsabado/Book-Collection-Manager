@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
 import { AppBar, Toolbar, Container, Typography } from '@mui/material';
@@ -10,7 +10,10 @@ import HomePage from './pages/HomePage';
 
 const App: React.FC = () => {
     const [query, setQuery] = useState('');
-    const [searchResults, setSearchResults] = useState<Book[]>([]);
+    const [searchResults, setSearchResults] = useState<Book[]>(() => {
+        const savedResults = localStorage.getItem('searchResults');
+        return savedResults ? JSON.parse(savedResults) : [];
+    });
     const [collection, setCollection] = useState<Book[]>([]);
     const [dbMessage, setDbMessage] = useState('');
     const [editBook, setEditBook] = useState<Book | null>(null);
@@ -19,39 +22,37 @@ const App: React.FC = () => {
     const [totalItems, setTotalItems] = useState(0);
     const [hasSearched, setHasSearched] = useState(false);
 
-    const fetchBooks = async (searchQuery: string, pageNum: number) => {
+    const fetchBooks = useCallback(async (searchQuery: string, pageNum: number) => {
         const startIndex = (pageNum - 1) * 40;
         const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
-        setSearchResults(response.data.items.map((item: any) => ({
+        const books = response.data.items.map((item: any) => ({
             google_books_id: item.id,
             title: item.volumeInfo.title,
             author: item.volumeInfo.authors?.[0],
             description: item.volumeInfo.description,
             cover_image: item.volumeInfo.imageLinks?.thumbnail,
             published_year: parseInt(item.volumeInfo.publishedDate?.split('-')[0]),
-            status: 'Add to collection'
-        })));
+            status: localStorage.getItem(item.id) || 'Add to collection'
+        }));
+        setSearchResults(books);
+        localStorage.setItem('searchResults', JSON.stringify(books));
         setTotalItems(response.data.totalItems);
-    };
+    }, []);
 
     useEffect(() => {
         fetchBooks('subject:fiction', page);
-    }, [page]);
+    }, [fetchBooks, page]);
 
     const searchBooks = async (e: React.FormEvent) => {
         e.preventDefault();
-        await fetchBooks(query, page);
+        await fetchBooks(query, 1);
         setHasSearched(true);
+        setPage(1);
     };
 
     const addToCollection = async (book: Book) => {
-        const existingBook = collection.find(b => b.google_books_id === book.google_books_id);
-        if (existingBook) {
-            await updateCollection({ ...existingBook, status: book.status });
-        } else {
-            const response = await axios.post('http://localhost:8000/api/books', book);
-            setCollection([...collection, response.data]);
-        }
+        const response = await axios.post('http://localhost:8000/api/books', book);
+        setCollection([...collection, response.data]);
     };
 
     const updateCollection = async (book: Book) => {
@@ -68,11 +69,6 @@ const App: React.FC = () => {
     const deleteFromCollection = async (id: string) => {
         await axios.delete(`http://localhost:8000/api/books/${id}`);
         setCollection(collection.filter(b => b.google_books_id !== id));
-    };
-
-    const handleEditClick = (book: Book) => {
-        setEditBook(book);
-        setOpen(true);
     };
 
     const handleClose = () => {
@@ -110,12 +106,11 @@ const App: React.FC = () => {
 
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
-        try {
-            await addToCollection(updatedBook);
-            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
-        } catch (error) {
-            console.error("Error updating the book status:", error);
-        }
+        localStorage.setItem(book.google_books_id, status);
+        setSearchResults(prevResults => 
+            prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b)
+        );
+        await updateCollection(updatedBook);
     };
 
     return (

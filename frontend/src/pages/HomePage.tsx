@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Container, Grid, Typography, Pagination, Snackbar, Alert } from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import BookCard from '../components/BookCard';
@@ -46,24 +46,20 @@ const HomePage: React.FC<HomePageProps> = ({
         const updatedBook = { ...book, status };
         try {
             await addToCollection(updatedBook);
+            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
             setSnackbarMessage(`${book.title} added to ${status}`);
             setOpenSnackbar(true);
-            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
         } catch (error) {
             console.error("Error updating the book status:", error);
         }
     };
-
-    // useEffect(() => {
-    //     searchBooks(new Event('initialize'));
-    // }, [page]);
 
     return (
         <Container>
             <SearchBar query={query} setQuery={setQuery} searchBooks={searchBooks} />
             <Typography variant="h4" component="h2" gutterBottom>
                 {hasSearched ? "Search Results" : "All Books"}
-                </Typography>
+            </Typography>
             <Grid container spacing={3}>
                 {searchResults.map(book => (
                     <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
@@ -93,4 +89,3 @@ const HomePage: React.FC<HomePageProps> = ({
 };
 
 export default HomePage;
-
