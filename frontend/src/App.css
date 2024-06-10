@@ -1,13 +1,84 @@
 /* Global styles */
 body {
     font-family: 'Roboto', sans-serif;
+    background-color: #e0e0d8; /* Oatmeal */
     margin: 0;
     padding: 0;
-    background-color: #f5f5f5;
+    color: #222222;
 }
 
 .container {
     padding: 20px;
+}
+
+/* Toolbar styles */
+.app-bar {
+    background-color: #56887d !important; /* Wintergreen Dream */
+    box-shadow: none;
+    border-bottom: 1px solid #ddd;
+    /* min-height: 80px !important; */
+}
+
+.toolbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.title {
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 20px !important;
+    color: #ffffff; /* White text */
+}
+
+.nav-links {
+    display: flex;
+    gap: 1rem;
+}
+
+.nav-links a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.nav-links .MuiButton-root {
+    font-weight: 500;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;    text-transform: none;
+    font-size: 20px !important;
+}
+
+.nav-links .MuiButton-startIcon {
+    margin-right: 0.5rem;
+}
+
+/* Typography styles */
+.h2-title {
+    font-size: 2rem;
+    font-weight: 600 !important;
+    color: #222222; /* Umber */
+    margin-top: 20px !important;
+    text-align: center;
+}
+
+.h3-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+    color: #222222; /* Umber */
+    margin-bottom: 12px;
+    text-transform: uppercase;
+}
+
+.book-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    color: #222222;
+    margin-bottom: 8px;
+}
+
+.book-author {
+    font-size: 1rem;
+    color: #666;
 }
 
 /* BookCard styles */
@@ -40,13 +111,13 @@ body {
 }
 
 .book-card .book-title {
-    height: 50px;
+    min-height: 50px;
     overflow: hidden;
     text-overflow: ellipsis;
     margin-bottom: 8px;
     font-weight: 500;
     line-height: normal;
-    font-size: 18px;
+    font-size: 16px;
     align-content: flex-end;
     text-align: -webkit-match-parent;
 }
@@ -60,9 +131,11 @@ body {
 }
 
 .book-card .MuiCardMedia-root {
-    height: 300px;
-    width: 100%;
+    min-height: 300px;
+    width: 200px;
     object-fit: cover;
+    padding-left: 20px;
+    padding-top: 20px;
 }
 
 .book-card .MuiFormControl-root {
@@ -73,7 +146,6 @@ body {
     align-self: flex-end;
     /* margin-top: 16px; */
     margin-left: 5px;
-
 }
 
 .action-section {
@@ -92,7 +164,7 @@ body {
 /* Typography styles */
 .MuiTypography-h4 {
     margin-bottom: 20px;
-    color: #333;
+    color: #222222;
 }
 
 /* Pagination styles */
@@ -100,6 +172,7 @@ body {
     display: flex;
     justify-content: center;
     margin-top: 20px;
+    margin-bottom: 20px !important;
 }
 
 /* Snackbar styles */
@@ -138,7 +211,7 @@ body {
 /* Toolbar */
 
 .app-bar {
-    background-color: #3f51b5; /* Change the background color to your preference */
+    background-color: #56887d !important; /* Wintergreen Dream */
     box-shadow: none;
     border-bottom: 1px solid #ddd;
 }
@@ -152,8 +225,8 @@ body {
 .title {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
-    font-size: 1.5rem;
-    color: #ffffff;
+    font-size: 20px;
+    color: #ffffff; /* White text */
 }
 
 .nav-links {
@@ -169,9 +242,69 @@ body {
 .nav-links .MuiButton-root {
     text-transform: none;
     font-size: 1rem;
-    font-weight: 400;
+    font-weight: 500;
 }
 
 .nav-links .MuiButton-startIcon {
     margin-right: 0.5rem;
+}
+
+
+/* Sections for different statuses */
+.section {
+    margin-bottom: 32px;
+    padding: 30px;
+    background: white;
+    border-radius: 8px;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
+}
+
+/* Title for each section */
+.section-title {
+    margin-bottom: 16px;
+    font-weight: bold;
+    color: #3f51b5;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+/* Divider between sections */
+.divider {
+    margin: 16px 0;
+    background-color: white;
+    height: 2px;
+}
+
+/* Search bar styles */
+.search-bar {
+    display: flex;
+    margin-bottom: 20px;
+    background-color: white;
+}
+
+.search-input {
+    flex-grow: 1;
+}
+
+.search-button {
+    margin-left: 10px;
+    background-color: #56887d !important; /* Oatmeal */
+    min-width: 100px !important;
+}
+
+.section-title-collection {
+    margin: 0;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-weight: 500 !important;
+    font-size: 24px;
+    line-height: 1.334;
+    letter-spacing: 0em;
+    margin-bottom: 0.35em;
+    text-align: center;
+    padding: 20px;
+    color: #56887d !important;
+}
+
+.book-item {
+    margin-top: 0px !important;
 }

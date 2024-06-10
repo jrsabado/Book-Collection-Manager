@@ -1,12 +1,11 @@
 import React from 'react';
-import { AppBar, Toolbar, Typography, IconButton, Button, Container } from '@mui/material';
+import { AppBar, Toolbar, Typography, Button, Container } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import CollectionsBookmarkIcon from '@mui/icons-material/CollectionsBookmark';
 
 const handleMyCollectionClick = () => {
     window.location.href = "/my-collection";
 };
-
 
 const MyToolbar: React.FC = () => {
     return (
@@ -31,6 +30,3 @@ const MyToolbar: React.FC = () => {
 };
 
 export default MyToolbar;
-
-
-

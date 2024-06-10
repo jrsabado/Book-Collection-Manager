@@ -9,15 +9,16 @@ interface SearchBarProps {
 
 const SearchBar: React.FC<SearchBarProps> = ({ query, setQuery, searchBooks }) => {
     return (
-        <form onSubmit={searchBooks} style={{ display: 'flex', marginBottom: '20px' }}>
+        <form onSubmit={searchBooks} className="search-bar">
             <TextField
                 value={query}
                 onChange={(e) => setQuery(e.target.value)}
                 label="Search for books"
                 variant="outlined"
                 fullWidth
+                className="search-input"
             />
-            <Button type="submit" variant="contained" color="primary" style={{ marginLeft: '10px' }}>
+            <Button type="submit" variant="contained" className="search-button">
                 Search
             </Button>
         </form>

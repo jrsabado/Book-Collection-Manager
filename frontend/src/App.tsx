@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import axios from 'axios';
-import { AppBar, Toolbar, Container, Typography } from '@mui/material';
-import Button from './ui/Button';
+import { Container, Typography } from '@mui/material';
 import { Book } from './components/Book';
 import EditBookDialog from './components/EditBookDialog';
 import MyCollectionPage from './pages/MyCollectionPage';
@@ -17,7 +16,7 @@ const App: React.FC = () => {
         return savedResults ? JSON.parse(savedResults) : [];
     });
     const [collection, setCollection] = useState<Book[]>([]);
-    const [dbMessage, setDbMessage] = useState('');
+    const [dbMessage] = useState('');
     const [editBook, setEditBook] = useState<Book | null>(null);
     const [open, setOpen] = useState(false);
     const [page, setPage] = useState(1);
@@ -86,26 +85,6 @@ const App: React.FC = () => {
         fetchCollection();
     }, []);
 
-    const testDatabaseConnection = async () => {
-        try {
-            const response = await axios.get('http://localhost:8000/test-db');
-            setDbMessage(response.data);
-        } catch (error) {
-            if (axios.isAxiosError(error)) {
-                setDbMessage('Error: ' + error.message);
-            } else {
-                setDbMessage('Error: An unknown error occurred');
-            }
-        }
-    };
-
-    const handleHomeClick = async () => {
-        setHasSearched(false);
-        setQuery('');
-        await fetchBooks('subject:fiction', 1);
-        setPage(1);
-    };
-
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         localStorage.setItem(book.google_books_id, status);
@@ -119,7 +98,7 @@ const App: React.FC = () => {
         <Router>
             <div className="App">
                 <MyToolbar />
-                <Container style={{ marginTop: '80px' }}>
+                <Container style={{ marginTop: '60px' }}>
                     <Routes>
                         <Route path="/" element={
                             <HomePage
@@ -148,9 +127,6 @@ const App: React.FC = () => {
                         />
                     </Routes>
                 </Container>
-                <Button variant="contained" color="secondary" onClick={testDatabaseConnection} style={{ marginTop: '20px' }}>
-                    Test Database Connection
-                </Button>
                 <Typography variant="body1" style={{ marginTop: '10px' }}>{dbMessage}</Typography>
                 <EditBookDialog
                     book={editBook}

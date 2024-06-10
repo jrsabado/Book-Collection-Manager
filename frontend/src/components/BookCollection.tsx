@@ -16,7 +16,7 @@ interface BookCollectionProps {
 const BookCollection: React.FC<BookCollectionProps> = ({ title, books, onUpdate, onDelete, onStatusChange, showDeleteIcon }) => {
     return (
         <div>
-            <Typography variant="h5" component="h3" gutterBottom>
+            <Typography variant="h5" component="h3" className='section-title-collection' gutterBottom>
                 {title}
             </Typography>
             <Grid container spacing={3}>

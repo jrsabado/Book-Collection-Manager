@@ -57,29 +57,36 @@ const HomePage: React.FC<HomePageProps> = ({
     return (
         <Container>
             <SearchBar query={query} setQuery={setQuery} searchBooks={searchBooks} />
-            <Typography variant="h4" component="h2" gutterBottom>
-                {hasSearched ? "Search Results" : "All Books"}
-            </Typography>
-            <Grid container spacing={3}>
-                {searchResults.map(book => (
-                    <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
-                        <BookCard 
-                            book={book}
-                            onUpdate={onUpdate}
-                            onDelete={onDelete}
-                            onStatusChange={handleStatusChange} 
-                            showDeleteIcon={false}                        
-                            />
-                    </Grid>
-                ))}
-            </Grid>
-            <Pagination 
+             <div className="section"> 
+                <Typography variant="h4" component="h2" className="h2-title" gutterBottom>
+                    {hasSearched ? "Search Results" : "All Available Books"}
+                </Typography>
+                <Pagination 
                 count={Math.ceil(totalItems / 40)} 
                 page={page} 
                 onChange={handlePageChange} 
-                color="primary" 
-                style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
-            />
+                className="pagination"
+                />
+                <Grid className='book-item' container spacing={3}>
+                    {searchResults.map(book => (
+                        <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
+                            <BookCard 
+                                book={book}
+                                onUpdate={onUpdate}
+                                onDelete={onDelete}
+                                onStatusChange={handleStatusChange}
+                                showDeleteIcon={false}
+                            />
+                        </Grid>
+                    ))}
+                </Grid>
+                <Pagination 
+                count={Math.ceil(totalItems / 40)} 
+                page={page} 
+                onChange={handlePageChange} 
+                className="pagination"
+                />
+             </div>
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
                 <Alert onClose={() => setOpenSnackbar(false)} severity="success">
                     {snackbarMessage}
