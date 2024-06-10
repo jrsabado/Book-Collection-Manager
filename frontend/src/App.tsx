@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import { AppBar, Toolbar, Container, Typography } from '@mui/material';
 import Button from './ui/Button';
@@ -104,6 +104,10 @@ const App: React.FC = () => {
         setPage(1);
     };
 
+    const handleMyCollectionClick = () => {
+        window.location.href = "/my-collection";
+    };
+
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         localStorage.setItem(book.google_books_id, status);
@@ -121,7 +125,7 @@ const App: React.FC = () => {
                         <Typography variant="h6">Book Collection Manager</Typography>
                         <nav>
                             <Link to="/" onClick={handleHomeClick}>Home</Link>
-                            <Link to="/my-collection">My Collection</Link>
+                            <Link to="/my-collection" onClick={handleMyCollectionClick}>My Collection</Link>
                         </nav>
                     </Toolbar>
                 </AppBar>
