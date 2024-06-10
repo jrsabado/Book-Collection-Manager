@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
+import { Container, Grid, Typography, Pagination, Snackbar, Alert } from '@mui/material';
 import SearchBar from '../components/SearchBar';
-import BookCollection from '../components/BookCollection';
-import Pagination from '../components/Pagination';
+import BookCard from '../components/BookCard';
 import { Book } from '../components/Book';
 
 interface HomePageProps {
@@ -14,48 +14,72 @@ interface HomePageProps {
     setPage: React.Dispatch<React.SetStateAction<number>>;
     totalItems: number;
     hasSearched: boolean;
+    onUpdate: (book: Book) => Promise<void>;
+    onDelete: (id: string) => Promise<void>;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ query, setQuery, searchResults, searchBooks, addToCollection, page, setPage, totalItems, hasSearched }) => {
+const HomePage: React.FC<HomePageProps> = ({ 
+    query, 
+    setQuery, 
+    searchResults, 
+    searchBooks, 
+    addToCollection, 
+    page, 
+    setPage, 
+    totalItems, 
+    hasSearched,
+    onUpdate,
+    onDelete
+}) => {
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [snackbarMessage, setSnackbarMessage] = useState('');
+
+    const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+        setPage(value);
+    };
+
+    const handleStatusChange = async (book: Book, status: string) => {
+        const updatedBook = { ...book, status };
+        try {
+            await addToCollection(updatedBook);
+            setSnackbarMessage(`${book.title} added to ${status}`);
+            setOpenSnackbar(true);
+        } catch (error) {
+            console.error("Error updating the book status:", error);
+        }
+    };
+
     return (
-        <div>
+        <Container>
             <SearchBar query={query} setQuery={setQuery} searchBooks={searchBooks} />
-            {hasSearched ? (
-                <>
-                    <h2>Search Results</h2>
-                    <Pagination
-                        page={page}
-                        setPage={setPage}
-                        totalItems={totalItems}
-                        itemsPerPage={40}
-                    />
-                    <BookCollection title="Search Results" books={searchResults} onAddToWantToRead={addToCollection} />
-                    <Pagination
-                        page={page}
-                        setPage={setPage}
-                        totalItems={totalItems}
-                        itemsPerPage={40}
-                    />
-                </>
-            ) : (
-                <>
-                    <h2>All Books</h2>
-                    <Pagination
-                        page={page}
-                        setPage={setPage}
-                        totalItems={totalItems}
-                        itemsPerPage={40}
-                    />
-                    <BookCollection title="All Books" books={searchResults} onAddToWantToRead={addToCollection} />
-                    <Pagination
-                        page={page}
-                        setPage={setPage}
-                        totalItems={totalItems}
-                        itemsPerPage={40}
-                    />
-                </>
-            )}
-        </div>
+            <Typography variant="h4" component="h2" gutterBottom>
+                {hasSearched ? "Search Results" : "All Books"}
+            </Typography>
+            <Grid container spacing={3}>
+                {searchResults.map(book => (
+                    <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
+                        <BookCard 
+                            book={book}
+                            onUpdate={onUpdate}
+                            onDelete={onDelete}
+                            onStatusChange={handleStatusChange}
+                        />
+                    </Grid>
+                ))}
+            </Grid>
+            <Pagination 
+                count={Math.ceil(totalItems / 40)} 
+                page={page} 
+                onChange={handlePageChange} 
+                color="primary" 
+                style={{ marginTop: '20px', display: 'flex', justifyContent: 'center' }}
+            />
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
+                <Alert onClose={() => setOpenSnackbar(false)} severity="success">
+                    {snackbarMessage}
+                </Alert>
+            </Snackbar>
+        </Container>
     );
 };
 

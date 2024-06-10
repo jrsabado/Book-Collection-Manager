@@ -4,20 +4,32 @@ import { Book } from '../components/Book';
 
 interface MyCollectionPageProps {
     collection: Book[];
-    updateCollection: (book: Book) => Promise<void>;
-    deleteFromCollection: (id: string) => Promise<void>;
+    onUpdate: (book: Book) => Promise<void>;
+    onDelete: (id: string) => Promise<void>;
 }
 
-const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, updateCollection, deleteFromCollection }) => {
-    const wantToReadBooks = collection.filter(book => book.status === 'Want to Read');
-    const readingBooks = collection.filter(book => book.status === 'Reading');
-    const readBooks = collection.filter(book => book.status === 'Read');
-
+const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdate, onDelete }) => {
     return (
         <div>
-            <BookCollection title="Want to Read" books={wantToReadBooks} onUpdate={updateCollection} onDelete={deleteFromCollection} />
-            <BookCollection title="Reading" books={readingBooks} onUpdate={updateCollection} onDelete={deleteFromCollection} />
-            <BookCollection title="Read" books={readBooks} onUpdate={updateCollection} onDelete={deleteFromCollection} />
+            <h2>My Collection</h2>
+            <BookCollection
+                title="Want to Read"
+                books={collection.filter(book => book.status === 'Want to Read')}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+            />
+            <BookCollection
+                title="Reading"
+                books={collection.filter(book => book.status === 'Reading')}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+            />
+            <BookCollection
+                title="Read"
+                books={collection.filter(book => book.status === 'Read')}
+                onUpdate={onUpdate}
+                onDelete={onDelete}
+            />
         </div>
     );
 };

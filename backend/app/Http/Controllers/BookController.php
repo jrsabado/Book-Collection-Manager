@@ -2,8 +2,8 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Book;
 use Illuminate\Http\Request;
+use App\Models\Book;
 
 class BookController extends Controller
 {
@@ -18,15 +18,25 @@ class BookController extends Controller
         return response()->json($book, 201);
     }
 
-    public function update(Request $request, Book $book)
+    public function show($google_books_id)
     {
-        $book->update($request->all());
-        return response()->json($book, 200);
+        $book = Book::where('google_books_id', $google_books_id)->firstOrFail();
+        return response()->json($book);
     }
 
-    public function destroy(Book $book)
+    public function update(Request $request, $google_books_id)
     {
+        $book = Book::where('google_books_id', $google_books_id)->firstOrFail();
+        $book->update($request->all());
+        return response()->json($book);
+    }
+
+    public function destroy($google_books_id)
+    {
+        $book = Book::where('google_books_id', $google_books_id)->firstOrFail();
         $book->delete();
         return response()->json(null, 204);
     }
 }
+
+

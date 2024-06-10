@@ -1,22 +1,28 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, Typography, IconButton, Select, MenuItem, FormControl, InputLabel, SelectChangeEvent } from '@mui/material';
-import { Delete as DeleteIcon } from '@mui/icons-material';
+import { Card, CardContent, CardMedia, Typography, FormControl, InputLabel, Select, MenuItem, IconButton, SelectChangeEvent } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
 import { Book } from './Book';
 
 interface BookCardProps {
     book: Book;
-    onAddToWantToRead?: (book: Book) => void;
-    onAddToReading?: (book: Book) => void;
-    onAddToRead?: (book: Book) => void;
-    onUpdate?: (book: Book) => Promise<void>;
-    onDelete?: (id: string) => void;
+    onUpdate: (book: Book) => Promise<void>;
+    onDelete: (id: string) => Promise<void>;
+    onStatusChange?: (book: Book, status: string) => Promise<void>;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book, onAddToWantToRead, onAddToReading, onAddToRead, onUpdate, onDelete }) => {
+const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange }) => {
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
-        const updatedBook = { ...book, status: newStatus };
-        if (onUpdate) await onUpdate(updatedBook);
+        if (onStatusChange) {
+            await onStatusChange(book, newStatus);
+        } else {
+            const updatedBook = { ...book, status: newStatus };
+            try {
+                await onUpdate(updatedBook);
+            } catch (error) {
+                console.error("Error updating the book status:", error);
+            }
+        }
     };
 
     return (
@@ -39,7 +45,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToWantToRead, onAddToRea
                     <InputLabel id="book-status-label">Status</InputLabel>
                     <Select
                         labelId="book-status-label"
-                        value={book.status}
+                        value={book.status || ''}
                         onChange={handleStatusChange}
                         label="Status"
                     >
@@ -48,7 +54,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onAddToWantToRead, onAddToRea
                         <MenuItem value="Read">Read</MenuItem>
                     </Select>
                 </FormControl>
-                <IconButton onClick={() => onDelete && onDelete(book.google_books_id)}>
+                <IconButton onClick={() => onDelete(book.google_books_id)}>
                     <DeleteIcon />
                 </IconButton>
             </CardContent>

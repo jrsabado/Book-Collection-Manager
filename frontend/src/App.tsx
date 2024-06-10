@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
     const fetchBooks = async (searchQuery: string, pageNum: number) => {
         const startIndex = (pageNum - 1) * 40;
-        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
+        const response = await axios.get(`/api/books?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
         setSearchResults(response.data.items.map((item: any) => ({
             google_books_id: item.id,
             title: item.volumeInfo.title,
@@ -50,20 +50,19 @@ const App: React.FC = () => {
     };
 
     const updateCollection = async (book: Book) => {
-        const response = await axios.put(`http://localhost:8000/api/books/${book.google_books_id}`, book);
-        setCollection(collection.map(b => b.google_books_id === book.google_books_id ? response.data : b));
-        setEditBook(null);
-        setOpen(false);
+        try {
+            const response = await axios.put(`http://localhost:8000/api/books/${book.google_books_id}`, book);
+            setCollection(collection.map(b => b.google_books_id === book.google_books_id ? response.data : b));
+            setEditBook(null);
+            setOpen(false);
+        } catch (error) {
+            console.error("Error updating the book:", error);
+        }
     };
 
     const deleteFromCollection = async (id: string) => {
         await axios.delete(`http://localhost:8000/api/books/${id}`);
         setCollection(collection.filter(b => b.google_books_id !== id));
-    };
-
-    const handleEditClick = (book: Book) => {
-        setEditBook(book);
-        setOpen(true);
     };
 
     const handleClose = () => {
@@ -124,13 +123,15 @@ const App: React.FC = () => {
                                 setPage={setPage}
                                 totalItems={totalItems}
                                 hasSearched={hasSearched}
+                                onUpdate={updateCollection}
+                                onDelete={deleteFromCollection}
                             />
                         } />
                         <Route path="/my-collection" element={
                             <MyCollectionPage 
                                 collection={collection} 
-                                updateCollection={updateCollection} 
-                                deleteFromCollection={deleteFromCollection} 
+                                onUpdate={updateCollection} 
+                                onDelete={deleteFromCollection} 
                             />} 
                         />
                     </Routes>
