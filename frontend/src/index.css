@@ -72,6 +72,30 @@ nav a:hover {
   justify-content: space-between;
   align-items: center;
   transition: transform 0.3s ease, box-shadow 0.3s ease;
+  height: 100%;
+}
+
+.book-card .book-details {
+    flex: 1;
+}
+
+.book-card .book-title {
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-card .book-author {
+    height: 30px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.book-card .MuiCardContent-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
 }
 
 .book-card:hover {
@@ -111,15 +135,20 @@ nav a:hover {
 }
 
 .book-title {
-  font-size: 1.2rem;
+  font-size: 16px;
   height: 3em;
   overflow: hidden;
   text-overflow: ellipsis;
+  height: 50px;
 }
 
 .book-author {
-  font-size: 0.9rem;
-  color: #7E685A; /* Updated to text color */
+  font-size: 12px;
+  color: #7E685A;
+  height: 20px; 
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .book-status-dropdown {

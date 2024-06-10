@@ -67,8 +67,9 @@ const HomePage: React.FC<HomePageProps> = ({
                             book={book}
                             onUpdate={onUpdate}
                             onDelete={onDelete}
-                            onStatusChange={handleStatusChange}
-                        />
+                            onStatusChange={handleStatusChange} 
+                            // showDeleteIcon={false}                        
+                            />
                     </Grid>
                 ))}
             </Grid>

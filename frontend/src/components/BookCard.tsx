@@ -8,13 +8,13 @@ interface BookCardProps {
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
     onStatusChange: (book: Book, status: string) => Promise<void>;
+    showDeleteIcon?: boolean;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange }) => {
+const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange, showDeleteIcon = true }) => {
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
         await onStatusChange(book, newStatus);
-        localStorage.setItem(book.google_books_id, newStatus);
     };
 
     return (
@@ -27,12 +27,14 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                 title={book.title}
             />
             <CardContent>
-                <Typography gutterBottom variant="h5" component="div">
-                    {book.title}
-                </Typography>
-                <Typography variant="body2" color="textSecondary" component="div">
-                    {book.author}
-                </Typography>
+                <div className="book-details">
+                    <Typography gutterBottom component="div" className="book-title">
+                        {book.title}
+                    </Typography>
+                    <Typography variant="body2" color="textSecondary" component="div" className="book-author">
+                        {book.author}
+                    </Typography>
+                </div>
                 <FormControl fullWidth>
                     <InputLabel id="book-status-label">Status</InputLabel>
                     <Select
@@ -47,9 +49,11 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                         <MenuItem value="Read">Read</MenuItem>
                     </Select>
                 </FormControl>
-                <IconButton onClick={() => onDelete(book.google_books_id)}>
-                    <DeleteIcon />
-                </IconButton>
+                {showDeleteIcon && (
+                    <IconButton onClick={() => onDelete(book.google_books_id)}>
+                        <DeleteIcon />
+                    </IconButton>
+                )}
             </CardContent>
         </Card>
     );

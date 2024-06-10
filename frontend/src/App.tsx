@@ -7,6 +7,7 @@ import { Book } from './components/Book';
 import EditBookDialog from './components/EditBookDialog';
 import MyCollectionPage from './pages/MyCollectionPage';
 import HomePage from './pages/HomePage';
+import './App.css';
 
 const App: React.FC = () => {
     const [query, setQuery] = useState('');
@@ -120,19 +121,21 @@ const App: React.FC = () => {
     return (
         <Router>
             <div className="App">
-                <AppBar position="static">
+                <AppBar position="fixed" className="header">
                     <Toolbar>
-                        <Typography variant="h6">Book Collection Manager</Typography>
-                        <nav>
-                            <Link to="/" onClick={handleHomeClick}>Home</Link>
-                            <Link to="/my-collection" onClick={handleMyCollectionClick}>My Collection</Link>
+                        <Typography variant="h6" component="div">
+                            Book Collection Manager
+                        </Typography>
+                        <nav className="nav-links">
+                            <Link to="/" className="nav-link" onClick={handleHomeClick}>Home</Link>
+                            <Link to="/my-collection" onClick={handleMyCollectionClick} className="nav-link">My Collection</Link>
                         </nav>
                     </Toolbar>
                 </AppBar>
-                <Container>
+                <Container style={{ marginTop: '80px' }}>
                     <Routes>
                         <Route path="/" element={
-                            <HomePage 
+                            <HomePage
                                 query={query}
                                 setQuery={setQuery}
                                 searchResults={searchResults}
@@ -153,15 +156,15 @@ const App: React.FC = () => {
                                 collection={collection} 
                                 onUpdate={updateCollection} 
                                 onDelete={deleteFromCollection} 
-                                onStatusChange={handleStatusChange}
+                                onStatusChange={handleStatusChange} 
                             />} 
                         />
                     </Routes>
-                    <Button variant="contained" color="secondary" onClick={testDatabaseConnection} style={{ marginTop: '20px' }}>
-                        Test Database Connection
-                    </Button>
-                    <Typography variant="body1" style={{ marginTop: '10px' }}>{dbMessage}</Typography>
                 </Container>
+                <Button variant="contained" color="secondary" onClick={testDatabaseConnection} style={{ marginTop: '20px' }}>
+                    Test Database Connection
+                </Button>
+                <Typography variant="body1" style={{ marginTop: '10px' }}>{dbMessage}</Typography>
                 <EditBookDialog
                     book={editBook}
                     open={open}

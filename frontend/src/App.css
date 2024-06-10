@@ -1,62 +1,121 @@
-.App {
+/* Global styles */
+body {
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f5f5f5;
+}
+
+.container {
+    padding: 20px;
+}
+
+/* BookCard styles */
+.book-card {
     display: flex;
     flex-direction: column;
-    min-height: 100vh;
-  }
-  
-  header {
-    width: 100%;
-    background-color: #3f51b5;
-    color: white;
-    padding: 10px 20px;
-  }
-  
-  header nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: bold;
-  }
-  
-  header nav a:hover {
-    text-decoration: underline;
-  }
-  
-  .main-content {
+    justify-content: space-between;
+    height: 100%;
+    background-color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.3s;
+}
+
+.book-card:hover {
+    transform: translateY(-10px);
+}
+
+.book-card .MuiCardContent-root {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 16px;
+}
+
+.book-card .book-details {
     flex: 1;
-    padding: 20px;
-  }
-  
-  .footer {
-    background-color: #3f51b5;
-    color: white;
-    text-align: center;
-    padding: 10px 20px;
-    position: relative;
-    bottom: 0;
+}
+
+.book-card .book-title {
+    height: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    margin-bottom: 8px;
+    font-weight: 500;
+    line-height: normal;
+    font-size: 18px;
+    align-content: flex-end;
+    text-align: -webkit-match-parent;
+}
+
+.book-card .book-author {
+    height: 20px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: #757575;
+}
+
+.book-card .MuiCardMedia-root {
+    height: 300px;
     width: 100%;
-  }
-  
-  .container {
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  .book-collection {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-  
-  .book-collection h2 {
+    object-fit: cover;
+}
+
+.book-card .MuiFormControl-root {
+    margin-top: 16px;
+}
+
+.book-card .MuiIconButton-root {
+    align-self: flex-end;
+    margin-top: 16px;
+}
+
+/* Typography styles */
+.MuiTypography-h4 {
     margin-bottom: 20px;
-  }
-  
-  .book-collection .book-grid {
+    color: #333;
+}
+
+/* Pagination styles */
+.MuiPagination-root {
     display: flex;
-    flex-wrap: wrap;
     justify-content: center;
+    margin-top: 20px;
+}
+
+/* Snackbar styles */
+.MuiSnackbar-root {
+    bottom: 20px;
+}
+
+/* Header styles */
+.header {
+    background-color: #3f51b5;
+    color: #ffffff;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.header .MuiToolbar-root {
+    display: flex;
+    justify-content: space-between;
+}
+
+.header .nav-links {
+    display: flex;
     gap: 20px;
-    padding: 20px;
-  }
-  
+}
+
+.header .nav-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.3s;
+}
+
+.header .nav-link:hover {
+    color: #ffeb3b;
+}

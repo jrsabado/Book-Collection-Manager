@@ -19,6 +19,7 @@ const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdat
                 onUpdate={onUpdate}
                 onDelete={onDelete}
                 onStatusChange={onStatusChange}
+                showDeleteIcon={true} // Show delete icon in MyCollectionPage
             />
             <BookCollection
                 title="Reading"
@@ -26,6 +27,7 @@ const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdat
                 onUpdate={onUpdate}
                 onDelete={onDelete}
                 onStatusChange={onStatusChange}
+                showDeleteIcon={true} // Show delete icon in MyCollectionPage
             />
             <BookCollection
                 title="Read"
@@ -33,6 +35,7 @@ const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdat
                 onUpdate={onUpdate}
                 onDelete={onDelete}
                 onStatusChange={onStatusChange}
+                showDeleteIcon={true} // Show delete icon in MyCollectionPage
             />
         </div>
     );
