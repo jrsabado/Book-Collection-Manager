@@ -1,5 +1,5 @@
 import React from 'react';
-import { Card, CardContent, CardMedia, Typography, FormControl, InputLabel, Select, MenuItem, IconButton, SelectChangeEvent } from '@mui/material';
+import { Card, CardContent, CardMedia, Typography, FormControl, InputLabel, Select, MenuItem, SelectChangeEvent, IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Book } from './Book';
 
@@ -7,21 +7,17 @@ interface BookCardProps {
     book: Book;
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
-    onStatusChange?: (book: Book, status: string) => Promise<void>;
+    onStatusChange: (book: Book, status: string) => Promise<void>;
 }
 
 const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange }) => {
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
-        if (onStatusChange) {
-            await onStatusChange(book, newStatus);
-        } else {
-            const updatedBook = { ...book, status: newStatus };
-            try {
-                await onUpdate(updatedBook);
-            } catch (error) {
-                console.error("Error updating the book status:", error);
-            }
+        const updatedBook = { ...book, status: newStatus };
+        try {
+            await onStatusChange(updatedBook, newStatus);
+        } catch (error) {
+            console.error("Error updating the book status:", error);
         }
     };
 

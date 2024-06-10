@@ -8,9 +8,10 @@ interface BookCollectionProps {
     books: Book[];
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
+    onStatusChange: (book: Book, status: string) => Promise<void>;
 }
 
-const BookCollection: React.FC<BookCollectionProps> = ({ title, books, onUpdate, onDelete }) => {
+const BookCollection: React.FC<BookCollectionProps> = ({ title, books, onUpdate, onDelete, onStatusChange }) => {
     return (
         <div>
             <h3>{title}</h3>
@@ -21,6 +22,7 @@ const BookCollection: React.FC<BookCollectionProps> = ({ title, books, onUpdate,
                             book={book}
                             onUpdate={onUpdate}
                             onDelete={onDelete}
+                            onStatusChange={onStatusChange}
                         />
                     </Grid>
                 ))}

@@ -6,9 +6,10 @@ interface MyCollectionPageProps {
     collection: Book[];
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
+    onStatusChange: (book: Book, status: string) => Promise<void>;
 }
 
-const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdate, onDelete }) => {
+const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdate, onDelete, onStatusChange }) => {
     return (
         <div>
             <h2>My Collection</h2>
@@ -17,18 +18,21 @@ const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdat
                 books={collection.filter(book => book.status === 'Want to Read')}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
+                onStatusChange={onStatusChange}
             />
             <BookCollection
                 title="Reading"
                 books={collection.filter(book => book.status === 'Reading')}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
+                onStatusChange={onStatusChange}
             />
             <BookCollection
                 title="Read"
                 books={collection.filter(book => book.status === 'Read')}
                 onUpdate={onUpdate}
                 onDelete={onDelete}
+                onStatusChange={onStatusChange}
             />
         </div>
     );

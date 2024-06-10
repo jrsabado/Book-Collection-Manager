@@ -1,5 +1,5 @@
 export interface Book {
-    id: number; // Ensure this is the primary key from the database
+    id: number; 
     google_books_id: string;
     title: string;
     author?: string;

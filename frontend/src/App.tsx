@@ -21,7 +21,7 @@ const App: React.FC = () => {
 
     const fetchBooks = async (searchQuery: string, pageNum: number) => {
         const startIndex = (pageNum - 1) * 40;
-        const response = await axios.get(`/api/books?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
         setSearchResults(response.data.items.map((item: any) => ({
             google_books_id: item.id,
             title: item.volumeInfo.title,
@@ -63,6 +63,16 @@ const App: React.FC = () => {
     const deleteFromCollection = async (id: string) => {
         await axios.delete(`http://localhost:8000/api/books/${id}`);
         setCollection(collection.filter(b => b.google_books_id !== id));
+    };
+
+    const handleStatusChange = async (book: Book, status: string) => {
+        const updatedBook = { ...book, status };
+        try {
+            await updateCollection(updatedBook);
+            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
+        } catch (error) {
+            console.error("Error updating the book status:", error);
+        }
     };
 
     const handleClose = () => {
@@ -125,13 +135,15 @@ const App: React.FC = () => {
                                 hasSearched={hasSearched}
                                 onUpdate={updateCollection}
                                 onDelete={deleteFromCollection}
+                                onStatusChange={handleStatusChange}
                             />
                         } />
                         <Route path="/my-collection" element={
                             <MyCollectionPage 
                                 collection={collection} 
                                 onUpdate={updateCollection} 
-                                onDelete={deleteFromCollection} 
+                                onDelete={deleteFromCollection}
+                                onStatusChange={handleStatusChange} 
                             />} 
                         />
                     </Routes>

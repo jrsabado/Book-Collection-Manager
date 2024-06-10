@@ -16,6 +16,7 @@ interface HomePageProps {
     hasSearched: boolean;
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
+    onStatusChange: (book: Book, status: string) => Promise<void>; 
 }
 
 const HomePage: React.FC<HomePageProps> = ({ 
@@ -29,7 +30,8 @@ const HomePage: React.FC<HomePageProps> = ({
     totalItems, 
     hasSearched,
     onUpdate,
-    onDelete
+    onDelete,
+    onStatusChange
 }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -41,7 +43,7 @@ const HomePage: React.FC<HomePageProps> = ({
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         try {
-            await addToCollection(updatedBook);
+            await onStatusChange(updatedBook, status); 
             setSnackbarMessage(`${book.title} added to ${status}`);
             setOpenSnackbar(true);
         } catch (error) {
