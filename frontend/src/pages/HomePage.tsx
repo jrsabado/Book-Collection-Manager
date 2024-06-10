@@ -8,6 +8,7 @@ interface HomePageProps {
     query: string;
     setQuery: React.Dispatch<React.SetStateAction<string>>;
     searchResults: Book[];
+    setSearchResults: React.Dispatch<React.SetStateAction<Book[]>>;
     searchBooks: (e: React.FormEvent) => Promise<void>;
     addToCollection: (book: Book) => Promise<void>;
     page: number;
@@ -16,13 +17,14 @@ interface HomePageProps {
     hasSearched: boolean;
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
-    onStatusChange: (book: Book, status: string) => Promise<void>; 
+    onStatusChange: (book: Book, status: string) => Promise<void>;  // Added this line
 }
 
 const HomePage: React.FC<HomePageProps> = ({ 
     query, 
     setQuery, 
     searchResults, 
+    setSearchResults,
     searchBooks, 
     addToCollection, 
     page, 
@@ -30,8 +32,7 @@ const HomePage: React.FC<HomePageProps> = ({
     totalItems, 
     hasSearched,
     onUpdate,
-    onDelete,
-    onStatusChange
+    onDelete
 }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -43,10 +44,12 @@ const HomePage: React.FC<HomePageProps> = ({
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         try {
-            await onStatusChange(updatedBook, status); 
+            await addToCollection(updatedBook);
             setSnackbarMessage(`${book.title} added to ${status}`);
             setOpenSnackbar(true);
-        } catch (error) {
+            setSearchResults((prevResults: Book[]) => 
+                prevResults.map((b: Book) => (b.google_books_id === book.google_books_id ? updatedBook : b))
+            );        } catch (error) {
             console.error("Error updating the book status:", error);
         }
     };

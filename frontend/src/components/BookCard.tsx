@@ -13,12 +13,7 @@ interface BookCardProps {
 const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusChange }) => {
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
         const newStatus = event.target.value as string;
-        const updatedBook = { ...book, status: newStatus };
-        try {
-            await onStatusChange(updatedBook, newStatus);
-        } catch (error) {
-            console.error("Error updating the book status:", error);
-        }
+        await onStatusChange(book, newStatus);
     };
 
     return (
@@ -41,10 +36,11 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                     <InputLabel id="book-status-label">Status</InputLabel>
                     <Select
                         labelId="book-status-label"
-                        value={book.status || ''}
+                        value={book.status || 'Add to collection'}
                         onChange={handleStatusChange}
-                        label="Status"
+                        label="Add to collection"
                     >
+                        <MenuItem value="Add to collection" disabled>Add to collection</MenuItem>
                         <MenuItem value="Want to Read">Want to Read</MenuItem>
                         <MenuItem value="Reading">Reading</MenuItem>
                         <MenuItem value="Read">Read</MenuItem>

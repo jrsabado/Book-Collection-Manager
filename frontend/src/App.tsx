@@ -29,7 +29,7 @@ const App: React.FC = () => {
             description: item.volumeInfo.description,
             cover_image: item.volumeInfo.imageLinks?.thumbnail,
             published_year: parseInt(item.volumeInfo.publishedDate?.split('-')[0]),
-            status: 'Want to Read'
+            status: 'Add to collection'
         })));
         setTotalItems(response.data.totalItems);
     };
@@ -127,6 +127,7 @@ const App: React.FC = () => {
                                 query={query}
                                 setQuery={setQuery}
                                 searchResults={searchResults}
+                                setSearchResults={setSearchResults}
                                 searchBooks={searchBooks}
                                 addToCollection={addToCollection}
                                 page={page}
@@ -135,7 +136,8 @@ const App: React.FC = () => {
                                 hasSearched={hasSearched}
                                 onUpdate={updateCollection}
                                 onDelete={deleteFromCollection}
-                                onStatusChange={handleStatusChange}
+                                onStatusChange={addToCollection}
+                                
                             />
                         } />
                         <Route path="/my-collection" element={
