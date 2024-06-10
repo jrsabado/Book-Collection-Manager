@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Container, Grid, Typography, Pagination, Snackbar, Alert } from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import BookCard from '../components/BookCard';
@@ -17,7 +17,7 @@ interface HomePageProps {
     hasSearched: boolean;
     onUpdate: (book: Book) => Promise<void>;
     onDelete: (id: string) => Promise<void>;
-    onStatusChange: (book: Book, status: string) => Promise<void>;  // Added this line
+    onStatusChange: (book: Book, status: string) => Promise<void>;
 }
 
 const HomePage: React.FC<HomePageProps> = ({ 
@@ -32,7 +32,8 @@ const HomePage: React.FC<HomePageProps> = ({
     totalItems, 
     hasSearched,
     onUpdate,
-    onDelete
+    onDelete,
+    onStatusChange
 }) => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [snackbarMessage, setSnackbarMessage] = useState('');
@@ -47,19 +48,22 @@ const HomePage: React.FC<HomePageProps> = ({
             await addToCollection(updatedBook);
             setSnackbarMessage(`${book.title} added to ${status}`);
             setOpenSnackbar(true);
-            setSearchResults((prevResults: Book[]) => 
-                prevResults.map((b: Book) => (b.google_books_id === book.google_books_id ? updatedBook : b))
-            );        } catch (error) {
+            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
+        } catch (error) {
             console.error("Error updating the book status:", error);
         }
     };
+
+    // useEffect(() => {
+    //     searchBooks(new Event('initialize'));
+    // }, [page]);
 
     return (
         <Container>
             <SearchBar query={query} setQuery={setQuery} searchBooks={searchBooks} />
             <Typography variant="h4" component="h2" gutterBottom>
                 {hasSearched ? "Search Results" : "All Books"}
-            </Typography>
+                </Typography>
             <Grid container spacing={3}>
                 {searchResults.map(book => (
                     <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
@@ -89,3 +93,4 @@ const HomePage: React.FC<HomePageProps> = ({
 };
 
 export default HomePage;
+

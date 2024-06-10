@@ -45,8 +45,13 @@ const App: React.FC = () => {
     };
 
     const addToCollection = async (book: Book) => {
-        const response = await axios.post('http://localhost:8000/api/books', book);
-        setCollection([...collection, response.data]);
+        const existingBook = collection.find(b => b.google_books_id === book.google_books_id);
+        if (existingBook) {
+            await updateCollection({ ...existingBook, status: book.status });
+        } else {
+            const response = await axios.post('http://localhost:8000/api/books', book);
+            setCollection([...collection, response.data]);
+        }
     };
 
     const updateCollection = async (book: Book) => {
@@ -65,14 +70,9 @@ const App: React.FC = () => {
         setCollection(collection.filter(b => b.google_books_id !== id));
     };
 
-    const handleStatusChange = async (book: Book, status: string) => {
-        const updatedBook = { ...book, status };
-        try {
-            await updateCollection(updatedBook);
-            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
-        } catch (error) {
-            console.error("Error updating the book status:", error);
-        }
+    const handleEditClick = (book: Book) => {
+        setEditBook(book);
+        setOpen(true);
     };
 
     const handleClose = () => {
@@ -108,6 +108,16 @@ const App: React.FC = () => {
         setPage(1);
     };
 
+    const handleStatusChange = async (book: Book, status: string) => {
+        const updatedBook = { ...book, status };
+        try {
+            await addToCollection(updatedBook);
+            setSearchResults(prevResults => prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b));
+        } catch (error) {
+            console.error("Error updating the book status:", error);
+        }
+    };
+
     return (
         <Router>
             <div className="App">
@@ -136,16 +146,15 @@ const App: React.FC = () => {
                                 hasSearched={hasSearched}
                                 onUpdate={updateCollection}
                                 onDelete={deleteFromCollection}
-                                onStatusChange={addToCollection}
-                                
+                                onStatusChange={handleStatusChange}
                             />
                         } />
                         <Route path="/my-collection" element={
                             <MyCollectionPage 
                                 collection={collection} 
                                 onUpdate={updateCollection} 
-                                onDelete={deleteFromCollection}
-                                onStatusChange={handleStatusChange} 
+                                onDelete={deleteFromCollection} 
+                                onStatusChange={handleStatusChange}
                             />} 
                         />
                     </Routes>

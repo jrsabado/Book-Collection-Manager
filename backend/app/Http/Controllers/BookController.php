@@ -14,7 +14,10 @@ class BookController extends Controller
 
     public function store(Request $request)
     {
-        $book = Book::create($request->all());
+        $book = Book::updateOrCreate(
+            ['google_books_id' => $request->google_books_id],
+            $request->all()
+        );
         return response()->json($book, 201);
     }
 
@@ -38,5 +41,3 @@ class BookController extends Controller
         return response()->json(null, 204);
     }
 }
-
-
