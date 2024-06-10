@@ -1,13 +1,12 @@
 import React, { useState, useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import axios from 'axios';
-import { AppBar, Toolbar, Container } from '@mui/material';
+import { AppBar, Toolbar, Container, Typography } from '@mui/material';
 import Button from './ui/Button';
-import Typography from './ui/Typography';
-import Grid from './ui/Grid';
 import { Book } from './components/Book';
-import SearchBar from './components/SearchBar';
-import BookCollection from './components/BookCollection';
 import EditBookDialog from './components/EditBookDialog';
+import MyCollectionPage from './pages/MyCollectionPage';
+import HomePage from './pages/HomePage';
 
 const App: React.FC = () => {
     const [query, setQuery] = useState('');
@@ -16,10 +15,13 @@ const App: React.FC = () => {
     const [dbMessage, setDbMessage] = useState('');
     const [editBook, setEditBook] = useState<Book | null>(null);
     const [open, setOpen] = useState(false);
+    const [page, setPage] = useState(1);
+    const [totalItems, setTotalItems] = useState(0);
+    const [hasSearched, setHasSearched] = useState(false);
 
-    const searchBooks = async (e: React.FormEvent) => {
-        e.preventDefault();
-        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${query}`);
+    const fetchBooks = async (searchQuery: string, pageNum: number) => {
+        const startIndex = (pageNum - 1) * 40;
+        const response = await axios.get(`https://www.googleapis.com/books/v1/volumes?q=${searchQuery}&startIndex=${startIndex}&maxResults=40`);
         setSearchResults(response.data.items.map((item: any) => ({
             google_books_id: item.id,
             title: item.volumeInfo.title,
@@ -27,7 +29,19 @@ const App: React.FC = () => {
             description: item.volumeInfo.description,
             cover_image: item.volumeInfo.imageLinks?.thumbnail,
             published_year: parseInt(item.volumeInfo.publishedDate?.split('-')[0]),
+            status: 'Want to Read'
         })));
+        setTotalItems(response.data.totalItems);
+    };
+
+    useEffect(() => {
+        fetchBooks('subject:fiction', page);
+    }, [page]);
+
+    const searchBooks = async (e: React.FormEvent) => {
+        e.preventDefault();
+        await fetchBooks(query, page);
+        setHasSearched(true);
     };
 
     const addToCollection = async (book: Book) => {
@@ -36,15 +50,15 @@ const App: React.FC = () => {
     };
 
     const updateCollection = async (book: Book) => {
-        const response = await axios.put(`http://localhost:8000/api/books/${book.id}`, book);
-        setCollection(collection.map(b => b.id === book.id ? response.data : b));
+        const response = await axios.put(`http://localhost:8000/api/books/${book.google_books_id}`, book);
+        setCollection(collection.map(b => b.google_books_id === book.google_books_id ? response.data : b));
         setEditBook(null);
         setOpen(false);
     };
 
-    const deleteFromCollection = async (id: number) => {
+    const deleteFromCollection = async (id: string) => {
         await axios.delete(`http://localhost:8000/api/books/${id}`);
-        setCollection(collection.filter(b => b.id !== id));
+        setCollection(collection.filter(b => b.google_books_id !== id));
     };
 
     const handleEditClick = (book: Book) => {
@@ -78,39 +92,62 @@ const App: React.FC = () => {
         }
     };
 
+    const handleHomeClick = async () => {
+        setHasSearched(false);
+        setQuery('');
+        await fetchBooks('subject:fiction', 1);
+        setPage(1);
+    };
+
     return (
-        <div className="App">
-            <AppBar position="static">
-                <Toolbar>
-                    <Typography variant="h6">Book Search</Typography>
-                </Toolbar>
-            </AppBar>
-            <Container>
-                <SearchBar query={query} setQuery={setQuery} searchBooks={searchBooks} />
-                <BookCollection
-                    title="Search Results"
-                    books={searchResults}
-                    onAdd={addToCollection}
+        <Router>
+            <div className="App">
+                <AppBar position="static">
+                    <Toolbar>
+                        <Typography variant="h6">Book Collection Manager</Typography>
+                        <nav>
+                            <Link to="/" onClick={handleHomeClick}>Home</Link>
+                            <Link to="/my-collection">My Collection</Link>
+                        </nav>
+                    </Toolbar>
+                </AppBar>
+                <Container>
+                    <Routes>
+                        <Route path="/" element={
+                            <HomePage 
+                                query={query}
+                                setQuery={setQuery}
+                                searchResults={searchResults}
+                                searchBooks={searchBooks}
+                                addToCollection={addToCollection}
+                                page={page}
+                                setPage={setPage}
+                                totalItems={totalItems}
+                                hasSearched={hasSearched}
+                            />
+                        } />
+                        <Route path="/my-collection" element={
+                            <MyCollectionPage 
+                                collection={collection} 
+                                updateCollection={updateCollection} 
+                                deleteFromCollection={deleteFromCollection} 
+                            />} 
+                        />
+                    </Routes>
+                    <Button variant="contained" color="secondary" onClick={testDatabaseConnection} style={{ marginTop: '20px' }}>
+                        Test Database Connection
+                    </Button>
+                    <Typography variant="body1" style={{ marginTop: '10px' }}>{dbMessage}</Typography>
+                </Container>
+                <EditBookDialog
+                    book={editBook}
+                    open={open}
+                    onClose={handleClose}
+                    onSave={updateCollection}
+                    setEditBook={setEditBook}
                 />
-                <BookCollection
-                    title="My Collection"
-                    books={collection}
-                    onEdit={handleEditClick}
-                    onDelete={deleteFromCollection}
-                />
-                <Button variant="contained" color="secondary" onClick={testDatabaseConnection} style={{ marginTop: '20px' }}>
-                    Test Database Connection
-                </Button>
-                <Typography variant="body1" style={{ marginTop: '10px' }}>{dbMessage}</Typography>
-            </Container>
-            <EditBookDialog
-                book={editBook}
-                open={open}
-                onClose={handleClose}
-                onSave={updateCollection}
-                setEditBook={setEditBook}
-            />
-        </div>
+            </div>
+        </Router>
     );
 };
 

@@ -18,21 +18,14 @@ class BookController extends Controller
         return response()->json($book, 201);
     }
 
-    public function show($id)
+    public function update(Request $request, Book $book)
     {
-        return Book::findOrFail($id);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $book = Book::findOrFail($id);
         $book->update($request->all());
         return response()->json($book, 200);
     }
 
-    public function destroy($id)
+    public function destroy(Book $book)
     {
-        $book = Book::findOrFail($id);
         $book->delete();
         return response()->json(null, 204);
     }

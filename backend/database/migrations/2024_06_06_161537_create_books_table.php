@@ -10,12 +10,13 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->id();
-            $table->string('google_books_id');
+            $table->string('google_books_id')->unique();
             $table->string('title');
             $table->string('author')->nullable();
             $table->text('description')->nullable();
             $table->string('cover_image')->nullable();
             $table->integer('published_year')->nullable();
+            $table->string('status')->default('Want to Read');
             $table->timestamps();
         });
     }
@@ -25,4 +26,3 @@ class CreateBooksTable extends Migration
         Schema::dropIfExists('books');
     }
 }
-
