@@ -20,16 +20,16 @@ interface HomePageProps {
     onStatusChange: (book: Book, status: string) => Promise<void>;
 }
 
-const HomePage: React.FC<HomePageProps> = ({ 
-    query, 
-    setQuery, 
-    searchResults, 
+const HomePage: React.FC<HomePageProps> = ({
+    query,
+    setQuery,
+    searchResults,
     setSearchResults,
-    searchBooks, 
-    addToCollection, 
-    page, 
-    setPage, 
-    totalItems, 
+    searchBooks,
+    addToCollection,
+    page,
+    setPage,
+    totalItems,
     hasSearched,
     onUpdate,
     onDelete,
@@ -115,29 +115,29 @@ const HomePage: React.FC<HomePageProps> = ({
                         </Select>
                     </FormControl>
                 </div>
-                <Pagination 
-                    count={Math.ceil(totalItems / 40)} 
-                    page={page} 
-                    onChange={handlePageChange} 
+                <Pagination
+                    count={Math.ceil(totalItems / 40)}
+                    page={page}
+                    onChange={handlePageChange}
                     className="pagination"
                 />
                 <Grid className='book-item' container spacing={3}>
                     {searchResults.map(book => (
                         <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
-                            <BookCard 
+                            <BookCard
                                 book={book}
                                 onUpdate={onUpdate}
                                 onDelete={onDelete}
                                 onStatusChange={handleStatusChange}
-                                showDeleteIcon={false}
+                                showDeleteIcon={true}
                             />
                         </Grid>
                     ))}
                 </Grid>
-                <Pagination 
-                    count={Math.ceil(totalItems / 40)} 
-                    page={page} 
-                    onChange={handlePageChange} 
+                <Pagination
+                    count={Math.ceil(totalItems / 40)}
+                    page={page}
+                    onChange={handlePageChange}
                     className="footer-pagination"
                 />
             </div>

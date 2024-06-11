@@ -16,6 +16,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
     const [descriptionOpen, setDescriptionOpen] = useState(false);
 
     const handleStatusChange = async (event: SelectChangeEvent<string>) => {
+        event.stopPropagation(); // Prevent event propagation
         const newStatus = event.target.value as string;
         await onStatusChange(book, newStatus);
     };
@@ -29,7 +30,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
     };
 
     const handleClickOpen = (event: React.MouseEvent) => {
-        event.stopPropagation();
+        event.stopPropagation(); // Prevent event propagation
         setOpen(true);
     };
 
@@ -61,7 +62,7 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
                         </Typography>
                     </div>
                     <div className="action-section">
-                        <FormControl fullWidth>
+                        <FormControl fullWidth onClick={(e) => e.stopPropagation()}>
                             <InputLabel id="book-status-label">Status</InputLabel>
                             <Select
                                 labelId="book-status-label"
