@@ -129,7 +129,7 @@ const HomePage: React.FC<HomePageProps> = ({
                                 onUpdate={onUpdate}
                                 onDelete={onDelete}
                                 onStatusChange={handleStatusChange}
-                                showDeleteIcon={true}
+                                showDeleteIcon={false}
                             />
                         </Grid>
                     ))}

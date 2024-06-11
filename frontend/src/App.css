@@ -274,7 +274,7 @@ body {
 /* Sections for different statuses */
 .section {
     margin-bottom: 32px;
-    padding: 20px 50px;
+    padding: 20px 30px;
     background: #fffffc;
     border-radius: 8px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);

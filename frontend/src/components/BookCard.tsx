@@ -40,6 +40,8 @@ const BookCard: React.FC<BookCardProps> = ({ book, onUpdate, onDelete, onStatusC
 
     const handleDelete = async () => {
         await onDelete(book.google_books_id);
+        // Set status back to "Add to collection"
+        book.status = "Add to collection";
         handleClose();
     };
 

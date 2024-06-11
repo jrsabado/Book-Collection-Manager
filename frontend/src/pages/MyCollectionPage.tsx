@@ -105,6 +105,7 @@ const MyCollectionPage: React.FC<MyCollectionPageProps> = ({ collection, onUpdat
                 />
                 <div className="divider"></div>
             </div>
+            
         </div>
     );
 };

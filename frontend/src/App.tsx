@@ -68,8 +68,18 @@ const App: React.FC = () => {
     };
 
     const deleteFromCollection = async (id: string) => {
-        await axios.delete(`http://localhost:8000/api/books/${id}`);
-        setCollection(collection.filter(b => b.google_books_id !== id));
+        try {
+            await axios.delete(`http://localhost:8000/api/books/${id}`);
+            setCollection(prevCollection => prevCollection.filter(b => b.google_books_id !== id));
+            setSearchResults(prevResults =>
+                prevResults.map(book =>
+                    book.google_books_id === id ? { ...book, status: 'Add to collection' } : book
+                )
+            );
+            localStorage.setItem(id, 'Add to collection');
+        } catch (error) {
+            console.error("Error deleting the book:", error);
+        }
     };
 
     const handleClose = () => {
@@ -88,8 +98,11 @@ const App: React.FC = () => {
     const handleStatusChange = async (book: Book, status: string) => {
         const updatedBook = { ...book, status };
         localStorage.setItem(book.google_books_id, status);
-        setSearchResults(prevResults => 
+        setSearchResults(prevResults =>
             prevResults.map(b => b.google_books_id === book.google_books_id ? updatedBook : b)
+        );
+        setCollection(prevCollection =>
+            prevCollection.map(b => b.google_books_id === book.google_books_id ? updatedBook : b)
         );
         await updateCollection(updatedBook);
     };
