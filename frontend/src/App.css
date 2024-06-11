@@ -13,7 +13,7 @@ body {
 
 /* Toolbar styles */
 .app-bar {
-    background-color: #56887d !important; /* Wintergreen Dream */
+    background-color: #222222 !important;
     box-shadow: none;
     border-bottom: 1px solid #ddd;
     padding: 10px 0; /* Add padding for a taller toolbar */
@@ -133,10 +133,8 @@ body {
 
 .book-card .MuiCardMedia-root {
     min-height: 300px;
-    width: 200px;
+    width: 100%;
     object-fit: cover;
-    padding-left: 20px;
-    padding-top: 20px;
 }
 
 .book-card .MuiFormControl-root {
@@ -212,13 +210,6 @@ body {
 }
 
 /* Toolbar */
-
-.app-bar {
-    background-color: #56887d !important; /* Wintergreen Dream */
-    box-shadow: none;
-    border-bottom: 1px solid #ddd;
-}
-
 .toolbar {
     display: flex;
     justify-content: space-between;
@@ -251,7 +242,6 @@ body {
 .nav-links .MuiButton-startIcon {
     margin-right: 0.5rem;
 }
-
 
 /* Sections for different statuses */
 .section {
@@ -311,3 +301,39 @@ body {
 .book-item {
     margin-top: 0px !important;
 }
+
+/* Sort menu styles */
+.sort-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    margin-bottom: 20px;
+    min-width: 150px;
+
+}
+
+.sort-label {
+    width: 250px;
+}
+
+
+.sort-dropdown {
+    margin-left: auto; /* Ensures the dropdown is positioned to the right */
+    width: 250px !important;
+}
+
+.sort-container .MuiFormControl-root {
+    min-width: 150px;
+}
+
+.sort-pagination-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.pagination {
+    margin: 0 10px;
+}
+
