@@ -1,7 +1,7 @@
 /* Global styles */
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #e0e0d8; /* Oatmeal */
+    background-color: #dcdbd6; /* Oatmeal */
     margin: 0;
     padding: 0;
     color: #222222;
@@ -13,7 +13,7 @@ body {
 
 /* Toolbar styles */
 .app-bar {
-    background-color: #222222 !important;
+    background-color: #41403c !important;
     box-shadow: none;
     border-bottom: 1px solid #ddd;
     padding: 10px 0; /* Add padding for a taller toolbar */
@@ -149,6 +149,40 @@ body {
     height: 32px;
 }
 
+/* Dialog styles */
+.dialog-content {
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    padding: 50px !important;
+}
+
+.dialog-details {
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+}
+
+.dialog-title {
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 10px;
+    padding-top: 20px;
+}
+
+.dialog-author {
+    font-size: 1.2rem;
+    color: #757575;
+    margin-bottom: 20px;
+    padding-top: 5px;
+}
+
+.dialog-description {
+    font-size: 1rem;
+    color: #444;
+    padding-top: 30px;
+}
+
 .action-section {
     display: flex;
     align-items: center;
@@ -165,15 +199,13 @@ body {
 /* Typography styles */
 .MuiTypography-h4 {
     margin-bottom: 20px;
-    color: #222222;
+    color: #41403c;
 }
 
 /* Pagination styles */
 .MuiPagination-root {
     display: flex;
     justify-content: center;
-    margin-top: 20px;
-    margin-bottom: 20px !important;
 }
 
 /* Snackbar styles */
@@ -182,11 +214,6 @@ body {
 }
 
 /* Header styles */
-.header {
-    background-color: #3f51b5;
-    color: #ffffff;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-}
 
 .header .MuiToolbar-root {
     display: flex;
@@ -220,7 +247,7 @@ body {
     font-family: 'Roboto', sans-serif;
     font-weight: 500;
     font-size: 20px;
-    color: #ffffff; /* White text */
+    color: #fffffc; /* White text */
 }
 
 .nav-links {
@@ -246,8 +273,8 @@ body {
 /* Sections for different statuses */
 .section {
     margin-bottom: 32px;
-    padding: 30px;
-    background: white;
+    padding: 20px 50px;
+    background: #fffffc;
     border-radius: 8px;
     box-shadow: 0 1px 5px rgba(0, 0, 0, 0.1);
 }
@@ -264,7 +291,7 @@ body {
 /* Divider between sections */
 .divider {
     margin: 16px 0;
-    background-color: white;
+    background-color: #fffffc;
     height: 2px;
 }
 
@@ -272,7 +299,8 @@ body {
 .search-bar {
     display: flex;
     margin-bottom: 20px;
-    background-color: white;
+    background-color: #fffffc;
+    border-radius: 10px;
 }
 
 .search-input {
@@ -281,8 +309,10 @@ body {
 
 .search-button {
     margin-left: 10px;
-    background-color: #56887d !important; /* Oatmeal */
+    background-color: #41403c !important; /* Oatmeal */
     min-width: 100px !important;
+    text-transform: capitalize;
+
 }
 
 .section-title-collection {
@@ -294,7 +324,7 @@ body {
     letter-spacing: 0em;
     margin-bottom: 0.35em;
     text-align: center;
-    padding: 20px;
+    padding-bottom: 20px;
     color: #56887d !important;
 }
 
@@ -309,7 +339,6 @@ body {
     align-items: center;
     margin-bottom: 20px;
     min-width: 150px;
-
 }
 
 .sort-label {
@@ -330,10 +359,8 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 20px;
 }
 
-.pagination {
-    margin: 0 10px;
+.footer-pagination {
+    margin: 30px;
 }
-

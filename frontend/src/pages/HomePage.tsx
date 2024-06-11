@@ -115,6 +115,12 @@ const HomePage: React.FC<HomePageProps> = ({
                         </Select>
                     </FormControl>
                 </div>
+                <Pagination 
+                    count={Math.ceil(totalItems / 40)} 
+                    page={page} 
+                    onChange={handlePageChange} 
+                    className="pagination"
+                />
                 <Grid className='book-item' container spacing={3}>
                     {searchResults.map(book => (
                         <Grid item key={book.google_books_id} xs={12} sm={6} md={3}>
@@ -128,15 +134,14 @@ const HomePage: React.FC<HomePageProps> = ({
                         </Grid>
                     ))}
                 </Grid>
-                <div className="sort-pagination-container">
-                    <Pagination 
-                        count={Math.ceil(totalItems / 40)} 
-                        page={page} 
-                        onChange={handlePageChange} 
-                        className="pagination"
-                    />
-                </div>
+                <Pagination 
+                    count={Math.ceil(totalItems / 40)} 
+                    page={page} 
+                    onChange={handlePageChange} 
+                    className="footer-pagination"
+                />
             </div>
+
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={() => setOpenSnackbar(false)}>
                 <Alert onClose={() => setOpenSnackbar(false)} severity="success">
                     {snackbarMessage}
